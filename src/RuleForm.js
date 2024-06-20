@@ -16,8 +16,7 @@ function RuleForm() {
     'in', 'not in', 'excludes', 'includes'
   ];
   const actionTypes = ['set', 'modify', 'insert', 'delete', 'update', 'retract', 'insertLogical'];
-  const functionTypes = ['sum', 'avg', 'min', 'max', 'count', 'collectList', 'collectSet'];
-  const temporalOperators = ['after', 'before', 'coincides', 'during', 'finishes', 'finishedby', 'includes', 'meets', 'metby', 'overlaps', 'overlappedby', 'starts', 'startedby'];
+  const functionTypes = ['sum', 'avg', 'min', 'max', 'accumulate', 'collectList', 'collectSet'];
 
   const addRule = () => {
     const newRule = {
@@ -441,135 +440,134 @@ function RuleForm() {
             </table>
             <button type="button" onClick={() => addCondition(ruleIndex)}>Add Condition</button>
   
-            {/* Similar tables for Actions and Functions */}
-<h4>Actions</h4>
-<table className="actions-table">
-  <thead>
-    <tr>
-      <th>Action Type</th>
-      <th>Fact Type</th>
-      <th>Property</th>
-      <th>Value</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {rule.actions && rule.actions.map((action, actionIndex) => (
-      <tr key={actionIndex}>
-        <td>
-          <select
-            value={action.type}
-            onChange={(e) => updateAction(ruleIndex, actionIndex, 'type', e.target.value)}
-            required
-          >
-            <option value="">Select Action Type</option>
-            {actionTypes.map((type) => (
-              <option key={type} value={type}>{type}</option>
+        <h4>Actions</h4>
+        <table className="actions-table">
+          <thead>
+            <tr>
+              <th>Action Type</th>
+              <th>Fact Type</th>
+              <th>Property</th>
+              <th>Value</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rule.actions && rule.actions.map((action, actionIndex) => (
+              <tr key={actionIndex}>
+                <td>
+                  <select
+                    value={action.type}
+                    onChange={(e) => updateAction(ruleIndex, actionIndex, 'type', e.target.value)}
+                    required
+                  >
+                    <option value="">Select Action Type</option>
+                    {actionTypes.map((type) => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <select
+                    value={action.factType}
+                    onChange={(e) => updateAction(ruleIndex, actionIndex, 'factType', e.target.value)}
+                    required
+                  >
+                    <option value="">Select Fact Type</option>
+                    {objectTypes.map((type) => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={action.property}
+                    onChange={(e) => updateAction(ruleIndex, actionIndex, 'property', e.target.value)}
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={action.value}
+                    onChange={(e) => updateAction(ruleIndex, actionIndex, 'value', e.target.value)}
+                    required
+                  />
+                </td>
+                <td>
+                  <button type="button" onClick={() => removeAction(ruleIndex, actionIndex)}>Remove</button>
+                </td>
+              </tr>
             ))}
-          </select>
-        </td>
-        <td>
-          <select
-            value={action.factType}
-            onChange={(e) => updateAction(ruleIndex, actionIndex, 'factType', e.target.value)}
-            required
-          >
-            <option value="">Select Fact Type</option>
-            {objectTypes.map((type) => (
-              <option key={type} value={type}>{type}</option>
-            ))}
-          </select>
-        </td>
-        <td>
-          <input
-            type="text"
-            value={action.property}
-            onChange={(e) => updateAction(ruleIndex, actionIndex, 'property', e.target.value)}
-            required
-          />
-        </td>
-        <td>
-          <input
-            type="text"
-            value={action.value}
-            onChange={(e) => updateAction(ruleIndex, actionIndex, 'value', e.target.value)}
-            required
-          />
-        </td>
-        <td>
-          <button type="button" onClick={() => removeAction(ruleIndex, actionIndex)}>Remove</button>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-<button type="button" onClick={() => addAction(ruleIndex)}>Add Action</button>
+          </tbody>
+        </table>
+        <button type="button" onClick={() => addAction(ruleIndex)}>Add Action</button>
 
-<h4>Functions</h4>
-<table className="functions-table">
-  <thead>
-    <tr>
-      <th>Function Type</th>
-      <th>Fact Type</th>
-      <th>Property</th>
-      <th>Alias</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {rule.functions && rule.functions.map((func, functionIndex) => (
-      <tr key={functionIndex}>
-        <td>
-          <select
-            value={func.type}
-            onChange={(e) => updateFunction(ruleIndex, functionIndex, 'type', e.target.value)}
-            required
-          >
-            <option value="">Select Function Type</option>
-            {functionTypes.map((type) => (
-              <option key={type} value={type}>{type}</option>
+        <h4>Functions</h4>
+        <table className="functions-table">
+          <thead>
+            <tr>
+              <th>Function Type</th>
+              <th>Fact Type</th>
+              <th>Property</th>
+              <th>Alias</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rule.functions && rule.functions.map((func, functionIndex) => (
+              <tr key={functionIndex}>
+                <td>
+                  <select
+                    value={func.type}
+                    onChange={(e) => updateFunction(ruleIndex, functionIndex, 'type', e.target.value)}
+                    required
+                  >
+                    <option value="">Select Function Type</option>
+                    {functionTypes.map((type) => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <select
+                    value={func.factType}
+                    onChange={(e) => updateFunction(ruleIndex, functionIndex, 'factType', e.target.value)}
+                    required
+                  >
+                    <option value="">Select Fact Type</option>
+                    {objectTypes.map((type) => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={func.property}
+                    onChange={(e) => updateFunction(ruleIndex, functionIndex, 'property', e.target.value)}
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={func.alias}
+                    onChange={(e) => updateFunction(ruleIndex, functionIndex, 'alias', e.target.value)}
+                    required
+                  />
+                </td>
+                <td>
+                  <button type="button" onClick={() => removeFunction(ruleIndex, functionIndex)}>Remove</button>
+                </td>
+              </tr>
             ))}
-          </select>
-        </td>
-        <td>
-          <select
-            value={func.factType}
-            onChange={(e) => updateFunction(ruleIndex, functionIndex, 'factType', e.target.value)}
-            required
-          >
-            <option value="">Select Fact Type</option>
-            {objectTypes.map((type) => (
-              <option key={type} value={type}>{type}</option>
-            ))}
-          </select>
-        </td>
-        <td>
-          <input
-            type="text"
-            value={func.property}
-            onChange={(e) => updateFunction(ruleIndex, functionIndex, 'property', e.target.value)}
-            required
-          />
-        </td>
-        <td>
-          <input
-            type="text"
-            value={func.alias}
-            onChange={(e) => updateFunction(ruleIndex, functionIndex, 'alias', e.target.value)}
-            required
-          />
-        </td>
-        <td>
-          <button type="button" onClick={() => removeFunction(ruleIndex, functionIndex)}>Remove</button>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-<button type="button" onClick={() => addFunction(ruleIndex)}>Add Function</button>
-            <button type="button" onClick={() => removeRule(ruleIndex)}>Remove Rule</button>
-          </div>
-        ))}
+          </tbody>
+        </table>
+        <button type="button" onClick={() => addFunction(ruleIndex)}>Add Function</button>
+                    <button type="button" onClick={() => removeRule(ruleIndex)}>Remove Rule</button>
+                  </div>
+                ))}
   
         <button type="button" onClick={addRule}>Add Rule</button>
   
@@ -582,175 +580,7 @@ function RuleForm() {
 }
 
 
-function ConditionForm({ condition, updateCondition, removeCondition, addNestedCondition, objectTypes, operators, temporalOperators }) {
-    return (
-      <div className="condition-form">
-        <input
-          type="text"
-          value={condition.binding}
-          onChange={(e) => updateCondition('binding', e.target.value)}
-          placeholder="Binding (optional)"
-        />
-        <select
-          value={condition.factType}
-          onChange={(e) => updateCondition('factType', e.target.value)}
-          required
-        >
-          <option value="">Select Fact Type</option>
-          {objectTypes.map((type) => (
-            <option key={type} value={type}>{type}</option>
-          ))}
-        </select>
-        <input
-          type="text"
-          value={condition.property}
-          onChange={(e) => updateCondition('property', e.target.value)}
-          placeholder="Property"
-          required
-        />
-        <select
-          value={condition.operator}
-          onChange={(e) => updateCondition('operator', e.target.value)}
-          required
-        >
-          <option value="">Select Operator</option>
-          {operators.map((op) => (
-            <option key={op} value={op}>{op}</option>
-          ))}
-        </select>
-        <select
-          value={condition.valueType}
-          onChange={(e) => updateCondition('valueType', e.target.value)}
-          required
-        >
-          <option value="literal">Literal</option>
-          <option value="variable">Variable</option>
-        </select>
-        <input
-          type="text"
-          value={condition.value}
-          onChange={(e) => updateCondition('value', e.target.value)}
-          placeholder={condition.valueType === 'literal' ? 'Value' : 'Variable Name'}
-          required
-        />
-        <select
-          value={condition.temporalOperator}
-          onChange={(e) => updateCondition('temporalOperator', e.target.value)}
-        >
-          <option value="">Select Temporal Operator</option>
-          {temporalOperators.map((op) => (
-            <option key={op} value={op}>{op}</option>
-          ))}
-        </select>
-        {condition.temporalOperator && (
-          <input
-            type="text"
-            value={condition.temporalValue}
-            onChange={(e) => updateCondition('temporalValue', e.target.value)}
-            placeholder="Temporal Value"
-            required
-          />
-        )}
-        <button type="button" onClick={removeCondition}>Remove Condition</button>
-        <button type="button" onClick={addNestedCondition}>Add Nested Condition</button>
-      </div>
-    );
-  }
 
-  function ActionForm({ action, updateAction, removeAction, actionTypes, objectTypes }) {
-    return (
-      <div className="action-form">
-        <select
-          value={action.type}
-          onChange={(e) => updateAction('type', e.target.value)}
-          required
-        >
-          <option value="">Select Action Type</option>
-          {actionTypes.map((type) => (
-            <option key={type} value={type}>{type}</option>
-          ))}
-        </select>
-        <select
-          value={action.factType}
-          onChange={(e) => updateAction('factType', e.target.value)}
-          required
-        >
-          <option value="">Select Fact Type</option>
-          {objectTypes.map((type) => (
-            <option key={type} value={type}>{type}</option>
-          ))}
-        </select>
-        <input
-          type="text"
-          value={action.property}
-          onChange={(e) => updateAction('property', e.target.value)}
-          placeholder="Property"
-          required
-        />
-        <input
-          type="text"
-          value={action.value}
-          onChange={(e) => updateAction('value', e.target.value)}
-          placeholder="Value"
-          required
-        />
-        <input
-          type="text"
-          value={action.method}
-          onChange={(e) => updateAction('method', e.target.value)}
-          placeholder="Method (for custom actions)"
-        />
-        <input
-          type="text"
-          value={action.parameters.join(', ')}
-          onChange={(e) => updateAction('parameters', e.target.value.split(', '))}
-          placeholder="Parameters (comma-separated)"
-        />
-        <button type="button" onClick={removeAction}>Remove Action</button>
-      </div>
-    );
-  }
   
-  function FunctionForm({ func, updateFunction, removeFunction, functionTypes, objectTypes }) {
-    return (
-      <div className="function-form">
-        <select
-          value={func.type}
-          onChange={(e) => updateFunction('type', e.target.value)}
-          required
-        >
-          <option value="">Select Function Type</option>
-          {functionTypes.map((type) => (
-            <option key={type} value={type}>{type}</option>
-          ))}
-        </select>
-        <select
-          value={func.factType}
-          onChange={(e) => updateFunction('factType', e.target.value)}
-          required
-        >
-          <option value="">Select Fact Type</option>
-          {objectTypes.map((type) => (
-            <option key={type} value={type}>{type}</option>
-          ))}
-        </select>
-        <input
-          type="text"
-          value={func.property}
-          onChange={(e) => updateFunction('property', e.target.value)}
-          placeholder="Property"
-          required
-        />
-        <input
-          type="text"
-          value={func.alias}
-          onChange={(e) => updateFunction('alias', e.target.value)}
-          placeholder="Alias"
-          required
-        />
-        <button type="button" onClick={removeFunction}>Remove Function</button>
-      </div>
-    );
-  }
 
   export default RuleForm;
