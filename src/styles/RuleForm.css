@@ -1,0 +1,105 @@
+.rule-form-container {
+  background-color: white;
+  color: #333;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+input[type="text"], 
+input[type="number"], 
+select {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  color: #333;
+  background-color: white;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.rule-container {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+h3, h4 {
+  margin-top: 0;
+  color: #333;
+}
+
+label {
+  color: #333;
+}
+
+/* Additional styles for better readability */
+.config-table,
+.rule-table,
+.conditions-table,
+.actions-table,
+.functions-table {
+  background-color: #f9f9f9;
+}
+
+.config-table td,
+.rule-table td,
+.conditions-table td,
+.actions-table td,
+.functions-table td {
+  background-color: white;
+}
+
+/* Style for table headers */
+.conditions-table th,
+.actions-table th,
+.functions-table th {
+  background-color: #e6e6e6;
+  color: #333;
+}
+
+/* Style for remove buttons */
+button[type="button"]:not(:last-child) {
+  background-color: #f44336;
+}
+
+button[type="button"]:not(:last-child):hover {
+  background-color: #d32f2f;
+}
+
+/* Style for checkboxes */
+input[type="checkbox"] {
+  width: auto;
+  margin-right: 5px;
+}
